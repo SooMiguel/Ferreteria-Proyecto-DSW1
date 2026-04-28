@@ -1,0 +1,198 @@
+﻿@model IEnumerable<Proyecto_Ferreteria.Models.Producto>
+
+@{
+    ViewData["Title"] = "Tienda Ferretería";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Nuestro Catálogo</h2>
+        <button class="btn btn-dark position-relative" onclick="abrirCarrito()">
+            🛒 Ver mi Carrito
+            <span id="contadorCarrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+            </span>
+        </button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 bg-light">
+                    <img src="https://via.placeholder.com/300x200?text=@item.Nombre" class="card-img-top rounded-top" alt="@item.Nombre">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">@item.Nombre</h5>
+                        <p class="card-text text-muted small flex-grow-1">@item.Descripcion</p>
+                        <div class="mb-2">
+                            <span class="badge bg-secondary">@item.Marca.Nombre</span>
+                            <span class="badge bg-info text-dark">@item.Categoria.Nombre</span>
+                        </div>
+                        <h4 class="text-primary fw-bold mb-0">S/ @item.Precio</h4>
+                        <p class="text-success small fw-bold mb-3">Stock disponible: @item.Stock unid.</p>
+
+                        <button class="btn btn-warning fw-bold w-100 mt-auto"
+                                onclick="agregarAlCarrito(@item.IdProducto, '@item.Nombre', @item.Precio.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))">
+                            🛒 Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold">Mi Carrito de Compras</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-center">Precio</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-end">Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoCarrito">
+                    </tbody>
+                </table>
+                <div class="text-end border-top pt-3 mt-3">
+                    <h4 class="fw-bold">Total a Pagar: <span id="totalCarrito" class="text-primary">S/ 0.00</span></h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Seguir Comprando</button>
+                <button type="button" class="btn btn-success fw-bold" onclick="procesarPago()">Pagar Ahora</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('carritoFerreteria')) || [];
+
+        // Ejecutar al cargar la página para actualizar la bolita roja
+        actualizarContador();
+
+        function agregarAlCarrito(id, nombre, precio) {
+            // Verificamos si el producto ya está en el carrito
+            let itemExistente = carrito.find(p => p.id === id);
+
+            if (itemExistente) {
+                itemExistente.cantidad += 1; // Si existe, sumamos 1 a la cantidad
+            } else {
+                // Si no existe, lo metemos como un objeto JSON nuevo
+                carrito.push({
+                    id: id,
+                    nombre: nombre,
+                    precio: parseFloat(precio),
+                    cantidad: 1
+                });
+            }
+
+            // Guardamos en LocalStorage
+            localStorage.setItem('carritoFerreteria', JSON.stringify(carrito));
+
+            actualizarContador();
+            alert("¡" + nombre + " agregado al carrito!");
+        }
+
+        function actualizarContador() {
+            let totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
+            document.getElementById('contadorCarrito').innerText = totalItems;
+        }
+
+        function abrirCarrito() {
+            let cuerpoTabla = document.getElementById('cuerpoCarrito');
+            let html = '';
+            let sumaTotal = 0;
+
+            if (carrito.length === 0) {
+                html = '<tr><td colspan="5" class="text-center text-muted py-4">Tu carrito está vacío 😔</td></tr>';
+            } else {
+                carrito.forEach((item, index) => {
+                    let subtotal = item.precio * item.cantidad;
+                    sumaTotal += subtotal;
+
+                    html += `
+                        <tr>
+                            <td class="align-middle">${item.nombre}</td>
+                            <td class="align-middle text-center">S/ ${item.precio.toFixed(2)}</td>
+                            <td class="align-middle text-center">
+                                <span class="badge bg-secondary fs-6">${item.cantidad}</span>
+                            </td>
+                            <td class="align-middle text-end fw-bold">S/ ${subtotal.toFixed(2)}</td>
+                            <td class="align-middle text-center">
+                                <button class="btn btn-sm btn-danger" onclick="eliminarItem(${index})">X</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            cuerpoTabla.innerHTML = html;
+            document.getElementById('totalCarrito').innerText = 'S/ ' + sumaTotal.toFixed(2);
+
+            // Mostrar el modal usando Bootstrap
+            var miModal = new bootstrap.Modal(document.getElementById('modalCarrito'));
+            miModal.show();
+        }
+
+        function eliminarItem(index) {
+            carrito.splice(index, 1); // Lo borra del arreglo
+            localStorage.setItem('carritoFerreteria', JSON.stringify(carrito)); // Actualiza la memoria
+            actualizarContador();
+            abrirCarrito(); // Redibuja la tabla
+        }
+
+                function procesarPago() {
+                    if (carrito.length === 0) {
+                        alert("No hay nada en el carrito para pagar.");
+                        return;
+                    }
+
+                    let btnPagar = document.querySelector('.btn-success');
+                    btnPagar.innerHTML = "Procesando...";
+                    btnPagar.disabled = true;
+
+                    // Llamada AJAX al controlador TiendaController > Método ProcesarPago
+                    fetch('/Tienda/ProcesarPago', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(carrito) // Convertimos el arreglo JS a texto JSON
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exito) {
+                            alert("🎉 " + data.mensaje);
+                            // Vaciamos el carrito de la memoria
+                            carrito = [];
+                            localStorage.removeItem('carritoFerreteria');
+
+                            // Recargamos la página para ver los nuevos stocks disminuidos
+                            window.location.reload();
+                        } else {
+                            alert("❌ Error: " + data.mensaje);
+                            btnPagar.innerHTML = "Pagar Ahora";
+                            btnPagar.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Hubo un error de comunicación con el servidor.");
+                        btnPagar.innerHTML = "Pagar Ahora";
+                        btnPagar.disabled = false;
+                    });
+                }
+    </script>
+}
