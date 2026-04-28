@@ -70,22 +70,26 @@ GO
 -- 4. PROCEDIMIENTOS ALMACENADOS 
 
 -- SP para Listar Productos (con nombres de marca y categoría)
-CREATE PROCEDURE sp_ListarProductos
+CREATE OR ALTER PROCEDURE sp_ListarProductos
 AS
 BEGIN
     SELECT 
-        p.IdProducto, p.Nombre, p.Descripcion, 
-        m.Nombre AS Marca, c.Nombre AS Categoria, 
-        p.Precio, p.Stock, p.ImagenUrl, p.Activo
-    FROM Productos p
-    INNER JOIN Marcas m ON p.IdMarca = m.IdMarca
-    INNER JOIN Categorias c ON p.IdCategoria = c.IdCategoria
-    WHERE p.Activo = 1;
+        IdProducto, 
+        Nombre, 
+        Descripcion, 
+        IdMarca, 
+        IdCategoria, 
+        Precio, 
+        Stock, 
+        ImagenUrl, 
+        Activo
+    FROM Productos
+    WHERE Activo = 1;
 END;
 GO
 
 -- SP para Insertar Producto
-CREATE PROCEDURE sp_InsertarProducto
+CREATE OR ALTER PROCEDURE sp_InsertarProducto
 (
     @Nombre VARCHAR(150),
     @Descripcion VARCHAR(255),
@@ -103,7 +107,7 @@ END;
 GO
 
 -- SP para Actualizar Producto
-CREATE PROCEDURE sp_ActualizarProducto
+CREATE OR ALTER PROCEDURE sp_ActualizarProducto
 (
     @IdProducto INT,
     @Nombre VARCHAR(150),
@@ -129,7 +133,7 @@ END;
 GO
 
 -- SP para Eliminar (Borrado Lógico)
-CREATE PROCEDURE sp_EliminarProducto
+CREATE OR ALTER PROCEDURE sp_EliminarProducto
 (
     @IdProducto INT
 )

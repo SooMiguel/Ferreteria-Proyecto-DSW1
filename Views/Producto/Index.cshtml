@@ -36,9 +36,20 @@
                                     <td class="align-middle fw-bold">@item.Nombre</td>
                                     <td class="align-middle">@item.Descripcion</td>
                                     <td class="align-middle">
-                                        <span class="badge bg-secondary">@item.Marca.Nombre</span>
+                                        @{
+                                            var marca = ((List<Proyecto_Ferreteria.Models.Marca>)ViewBag.ListaMarcas)
+                                            .FirstOrDefault(m => m.IdMarca == item.IdMarca);
+                                        }
+                                        <span class="badge bg-secondary">@(marca?.Nombre ?? "Sin Marca")</span>
                                     </td>
-                                    <td class="align-middle">@item.Categoria.Nombre</td>
+
+                                    <td class="align-middle">
+                                        @{
+                                            var cat = ((List<Proyecto_Ferreteria.Models.Categoria>)ViewBag.ListaCategorias)
+                                            .FirstOrDefault(c => c.IdCategoria == item.IdCategoria);
+                                        }
+                                        @(cat?.Nombre ?? "Sin Categoría")
+                                    </td>
                                     <td class="align-middle">@item.Precio.ToString("0.00")</td>
 
                                     <td class="align-middle text-center">
