@@ -143,6 +143,30 @@ BEGIN
 END;
 GO
 
+--Listar Ventas
+IF OBJECT_ID('sp_ListarVentasPorFecha', 'P') IS NOT NULL
+    DROP PROCEDURE sp_ListarVentasPorFecha;
+GO
+
+CREATE PROCEDURE sp_ListarVentasPorFecha
+(
+    @FechaInicio DATETIME,
+    @FechaFin DATETIME
+)
+AS
+BEGIN
+    SELECT 
+        v.IdVenta,
+        u.Nombres + ' ' + u.Apellidos AS Cliente,
+        v.FechaVenta,
+        v.ImporteTotal,
+        v.Estado
+    FROM Ventas v
+    INNER JOIN Usuarios u ON v.IdUsuario = u.IdUsuario
+    WHERE v.FechaVenta BETWEEN @FechaInicio AND @FechaFin
+END;
+GO
+
 -- 5. DATOS DE PRUEBA
 
 INSERT INTO Roles (Nombre) VALUES ('Administrador'), ('Cliente'), ('Almacenero');
@@ -157,4 +181,11 @@ INSERT INTO Productos (Nombre, Descripcion, IdMarca, IdCategoria, Precio, Stock,
 ('Martillo Galponero', 'Martillo con mango de madera', 1, 1, 25.00, 50, 'martillo.jpg'),
 ('Taladro Percutor 13mm', 'Taladro profesional 700W', 2, 2, 180.00, 15, 'taladro.jpg'),
 ('Cemento Tipo 1', 'Bolsa de cemento 42.5kg', 3, 3, 32.50, 100, 'cemento.jpg');
+GO
+
+INSERT INTO Ventas (IdUsuario, FechaVenta, ImporteTotal, Estado)
+VALUES 
+(2, GETDATE(), 120.50, 'Pagado'),
+(2, DATEADD(DAY, -5, GETDATE()), 80.00, 'Pendiente'),
+(2, DATEADD(MONTH, -1, GETDATE()), 200.00, 'Pagado');
 GO
