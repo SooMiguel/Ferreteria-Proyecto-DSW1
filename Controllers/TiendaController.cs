@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Ferreteria.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization; // <-- NUEVO: Necesario para poder usar [Authorize]
 
 namespace Proyecto_Ferreteria.Controllers
 {
@@ -27,14 +28,16 @@ namespace Proyecto_Ferreteria.Controllers
         }
 
         // POST: Recibe el JSON por AJAX y guarda en SQL
+        [Authorize] // <--- NUEVO: Candado de seguridad (Solo usuarios logueados)
         [HttpPost]
         public IActionResult ProcesarPago([FromBody] List<CarritoItem> carrito)
         {
             if (carrito == null || carrito.Count == 0)
                 return Json(new { exito = false, mensaje = "El carrito está vacío." });
 
-            // Ejemplo solo hasta que el rol 2 termine el Login
-            int idClienteActual = 2; 
+            // NUEVO: Leemos el ID directamente de la sesión (Cookie) del usuario conectado
+            int idClienteActual = int.Parse(User.FindFirst("IdUsuario").Value);
+
             decimal totalPago = carrito.Sum(x => x.Precio * x.Cantidad);
 
             using var transaction = _context.Database.BeginTransaction();

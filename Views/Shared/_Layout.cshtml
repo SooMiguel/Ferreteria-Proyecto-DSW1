@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Proyecto_Ferreteria</title>
+    <title>@ViewData["Title"] - Ferretería Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Proyecto_Ferreteria.styles.css" asp-append-version="true" />
@@ -12,20 +13,56 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto_Ferreteria</a>
+                <a class="navbar-brand fw-bold text-warning" asp-area="" asp-controller="Home" asp-action="Index">🛠️ Ferretería</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <!-- MENÚ PRINCIPAL -->
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <!-- Solo se muestran si el usuario inició sesión -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tienda" asp-action="Index">🛒 Tienda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Categorías</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Marcas" asp-action="Index">Marcas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ventas" asp-action="Index">Reporte de Ventas</a>
+                            </li>
+                        }
                     </ul>
+
+                    <!-- SECCIÓN DE USUARIO Y CERRAR SESIÓN -->
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item d-flex align-items-center me-3">
+                                <span class="text-secondary">
+                                    Hola, <strong class="text-dark">@User.FindFirst(ClaimTypes.Name)?.Value</strong>
+                                    <span class="badge bg-info text-dark ms-1">@User.FindFirst(ClaimTypes.Role)?.Value</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger btn-sm mt-1" asp-controller="Login" asp-action="Salir">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    }
+
                 </div>
             </div>
         </nav>
@@ -36,9 +73,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Proyecto_Ferreteria - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted mt-5 pt-3">
+        <div class="container text-center">
+            &copy; 2026 - Sistema de Ferretería
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
