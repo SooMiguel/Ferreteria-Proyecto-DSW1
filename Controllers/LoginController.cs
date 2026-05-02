@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Proyecto_Ferreteria.Data;
 using Microsoft.EntityFrameworkCore;
-using Proyecto_Ferreteria.Models; // <-- NUEVO: Para que reconozca a los Usuarios y Roles
-using System.Threading.Tasks; // <-- NUEVO: Para que funcionen los métodos async
+using Proyecto_Ferreteria.Models;
+using System.Threading.Tasks;
 
 namespace Proyecto_Ferreteria.Controllers
 {
@@ -21,10 +21,16 @@ namespace Proyecto_Ferreteria.Controllers
         // GET: Muestra la pantalla de Login
         public IActionResult Index()
         {
-            // Verificación segura: Si ya está logueado, lo mandamos al Home
+            // Verificación: Si ya está logueado, evaluamos a dónde mandarlo
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                // Si es administrador, al panel de control (Home)
+                if (User.IsInRole("Administrador"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                // Si es cliente, directo a comprar (Tienda)
+                return RedirectToAction("Index", "Tienda");
             }
             return View();
         }
@@ -33,28 +39,37 @@ namespace Proyecto_Ferreteria.Controllers
         [HttpPost]
         public async Task<IActionResult> Ingresar(string Correo, string Clave)
         {
-            // 1. Buscamos al usuario en la BD (Incluimos el Rol para saber si es Admin o Cliente)
+            // 1. Buscamos al usuario en la BD (Incluimos el Rol)
             var usuario = await _context.Usuarios
                 .Include(u => u.Rol)
                 .FirstOrDefaultAsync(u => u.Correo == Correo && u.Clave == Clave);
 
             if (usuario != null)
             {
-                // 2. ¡Las Credenciales! (Claims). Aquí guardamos su nombre, su rol y su ID.
+                // 2. Guardamos las credenciales y su Rol
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, usuario.Nombres),
                     new Claim("Correo", usuario.Correo),
                     new Claim(ClaimTypes.Role, usuario.Rol.Nombre),
-                    new Claim("IdUsuario", usuario.IdUsuario.ToString()) // Vital para el carrito
+                    new Claim("IdUsuario", usuario.IdUsuario.ToString())
                 };
 
                 // 3. Generamos la "Cookie" de sesión
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                // 4. Lo mandamos al sistema
-                return RedirectToAction("Index", "Home");
+                // 4. REDIRECCIÓN INTELIGENTE SEGÚN EL ROL
+                if (usuario.Rol.Nombre == "Administrador")
+                {
+                    // El jefe va a su panel de control
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // Los clientes van a comprar
+                    return RedirectToAction("Index", "Tienda");
+                }
             }
             else
             {

@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Proyecto_Ferreteria.Data;
 using Proyecto_Ferreteria.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization; // <-- 1. LIBRERÍA DE SEGURIDAD AGREGADA
 
 namespace Proyecto_Ferreteria.Controllers
 {
+    // <-- 2. CANDADO QUE BLOQUEA EL ACCESO A CLIENTES O USUARIOS NO LOGUEADOS
+    [Authorize(Roles = "Administrador")]
     public class ProductoController : Controller
     {
         private readonly FerreteriaContext _context;
@@ -67,10 +70,6 @@ namespace Proyecto_Ferreteria.Controllers
             return View(obj);
         }
 
-
-
-
-
         // GET: Mostrar formulario de edición
         public IActionResult Editar(int id)
         {
@@ -114,9 +113,6 @@ namespace Proyecto_Ferreteria.Controllers
             ViewBag.Categorias = new SelectList(_context.Categorias, "IdCategoria", "Nombre", obj.IdCategoria);
             return View(obj);
         }
-
-
-
 
         // GET: Eliminar (Borrado Lógico)
         public IActionResult Eliminar(int id)

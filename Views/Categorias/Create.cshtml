@@ -1,29 +1,47 @@
 ﻿@model Proyecto_Ferreteria.Models.Categoria
 
+@{
+    ViewData["Title"] = "Nueva Categoría";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-0 rounded-3">
-                <div class="card-header bg-dark text-white p-3">
-                    <h5 class="mb-0">✨ Registrar Nueva Categoría</h5>
-                </div>
-                <div class="card-body p-4">
+        <div class="col-lg-5 col-md-7">
+
+            <div class="text-center mb-4">
+                <h3 class="fw-bolder text-dark">Añadir Categoría</h3>
+                <p class="text-muted">Crea una nueva clasificación para el inventario</p>
+            </div>
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                        <div class="form-group mb-4">
-                            <label asp-for="Nombre" class="form-label fw-bold">Nombre de la Categoría</label>
-                            <input asp-for="Nombre" class="form-control form-control-lg" placeholder="Ej: Pinturas, Electricidad..." />
-                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Nombre" class="form-control" id="floatingNombre" placeholder="Ej: Herramientas..." autocomplete="off" />
+                            <label asp-for="Nombre" for="floatingNombre">Nombre de la Categoría</label>
+                            <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success btn-lg fw-bold">Guardar Categoría</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar y Volver</a>
+                        <div class="d-grid gap-3 mt-5">
+                            <button type="submit" class="btn btn-warning btn-lg fw-bold text-dark rounded-pill shadow-sm">
+                                Registrar Categoría
+                            </button>
+                            <a asp-action="Index" class="btn btn-light btn-lg fw-bold text-secondary rounded-pill">
+                                Cancelar
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

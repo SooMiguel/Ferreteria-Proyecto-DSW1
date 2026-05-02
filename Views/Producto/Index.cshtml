@@ -1,54 +1,69 @@
 ﻿@model IEnumerable<Proyecto_Ferreteria.Models.Producto>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark"><span class="me-2">🛠️</span> Inventario de Productos</h2>
-        <a asp-action="Agregar" class="btn btn-warning fw-bold shadow-sm">
-            + Nuevo Producto
+@{
+    ViewData["Title"] = "Inventario de Productos";
+}
+
+<div class="container-fluid px-4 mt-5">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <h2 class="fw-bolder text-dark mb-0">Inventario de Productos</h2>
+            <p class="text-muted mb-0">Administra el catálogo, precios y existencias.</p>
+        </div>
+        <a asp-action="Agregar" class="btn btn-warning fw-bold text-dark px-4 py-2 rounded-pill shadow-sm">
+            <span class="fs-5 me-1">+</span> Nuevo Producto
         </a>
     </div>
 
-    <div class="table-responsive card shadow-sm border-0">
-        <table class="table table-striped align-middle mb-0">
-            <thead class="bg-dark text-white">
-                <tr>
-                    <th class="ps-3">Producto</th>
-                    <th>Marca/Cat.</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="ps-3">
-                            <div class="fw-bold">@item.Nombre</div>
-                            <small class="text-muted">@item.Descripcion</small>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary">@item.IdMarca</span>
-                            <span class="badge bg-light text-dark border">@item.IdCategoria</span>
-                        </td>
-                        <td class="fw-bold text-success">S/ @item.Precio.ToString("N2")</td>
-                        <td>
-                            @if (item.Stock <= 10)
-                            {
-                                <span class="text-danger fw-bold">⚠️ @item.Stock</span>
-                            }
-                            else
-                            {
-                                <span class="text-dark">@item.Stock</span>
-                            }
-                        </td>
-                        <td class="text-center">
-                            <a asp-action="Editar" asp-route-id="@item.IdProducto" class="btn btn-sm btn-primary">Editar</a>
-                            <a asp-action="Eliminar" asp-route-id="@item.IdProducto" class="btn btn-sm btn-danger">Baja</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <!-- Tarjeta de la Tabla -->
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless align-middle mb-0">
+                    <thead class="table-light border-bottom">
+                        <tr>
+                            <th class="py-3 ps-4 text-secondary text-uppercase" style="font-size: 0.85rem;">Producto</th>
+                            <th class="py-3 text-secondary text-uppercase" style="font-size: 0.85rem;">Marca / Cat.</th>
+                            <th class="py-3 text-secondary text-uppercase" style="font-size: 0.85rem;">Precio</th>
+                            <th class="py-3 text-secondary text-uppercase" style="font-size: 0.85rem;">Stock</th>
+                            <th class="py-3 pe-4 text-secondary text-uppercase text-end" style="font-size: 0.85rem; width: 220px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="transition: all 0.2s ease-in-out;">
+                                <td class="py-3 ps-4">
+                                    <div class="fw-bold text-dark">@item.Nombre</div>
+                                    <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">@item.Descripcion</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary border me-1">ID M: @item.IdMarca</span>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary border">ID C: @item.IdCategoria</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success fs-6">S/ @item.Precio.ToString("N2")</span>
+                                </td>
+                                <td>
+                                    @if (item.Stock <= 10)
+                                    {
+                                        <span class="badge bg-danger rounded-pill px-3 py-2 shadow-sm">⚠️ @item.Stock un.</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-light text-dark border rounded-pill px-3 py-2">@item.Stock un.</span>
+                                    }
+                                </td>
+                                <td class="py-3 pe-4 text-end">
+                                    <a asp-action="Editar" asp-route-id="@item.IdProducto" class="btn btn-sm btn-light text-primary fw-bold rounded-pill px-3 me-1">Editar</a>
+                                    <a asp-action="Eliminar" asp-route-id="@item.IdProducto" class="btn btn-sm btn-light text-danger fw-bold rounded-pill px-3">Baja</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

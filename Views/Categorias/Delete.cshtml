@@ -1,37 +1,45 @@
 ﻿@model Proyecto_Ferreteria.Models.Categoria
 
+@{
+    ViewData["Title"] = "Eliminar Categoría";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-lg-6">
+
             <div class="card shadow-lg border-0 rounded-4 border-top border-danger border-5">
                 <div class="card-body p-5 text-center">
-                    <div class="text-danger mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                        </svg>
+
+                    <div class="mb-4">
+                        <span class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                            🗑️
+                        </span>
                     </div>
 
-                    <h2 class="fw-bold text-dark">¿Estás seguro?</h2>
-                    <p class="text-muted mb-4">Estás a punto de eliminar la categoría <strong>"@Model.Nombre"</strong>. Esta acción no se puede deshacer.</p>
+                    <h3 class="fw-bolder text-dark">¿Eliminar Categoría?</h3>
+                    <p class="text-muted mb-4">Estás a punto de borrar esta categoría permanentemente. Esta acción no se puede deshacer.</p>
 
-                    <div class="bg-light p-3 rounded-3 mb-4">
-                        <span class="text-secondary small d-block">Categoría a eliminar:</span>
-                        <span class="fs-4 fw-bold">@Model.Nombre</span>
+                    <div class="bg-light rounded-4 p-4 mb-5 border">
+                        <p class="text-secondary small fw-bold text-uppercase mb-1">Categoría seleccionada:</p>
+                        <h4 class="fw-bold text-dark mb-0">@Html.DisplayFor(model => model.Nombre)</h4>
                     </div>
 
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="IdCategoria" />
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-danger btn-lg fw-bold shadow-sm">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-light btn-lg px-4 rounded-pill fw-bold text-secondary">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold shadow-sm">
                                 Sí, Eliminar Definitivamente
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                No, Cancelar y Volver
-                            </a>
                         </div>
                     </form>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

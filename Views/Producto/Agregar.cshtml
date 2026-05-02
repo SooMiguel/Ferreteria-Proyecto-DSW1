@@ -1,76 +1,98 @@
 ﻿@model Proyecto_Ferreteria.Models.Producto
 
 @{
-    ViewData["Title"] = "Agregar Producto";
+    ViewData["Title"] = "Nuevo Producto";
 }
 
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Registrar Nuevo Producto</h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Agregar" method="post">
+        <div class="col-lg-8">
+
+            <div class="text-center mb-4">
+                <h3 class="fw-bolder text-dark">Registrar Producto</h3>
+                <p class="text-muted">Ingresa los detalles del nuevo artículo para el catálogo</p>
+            </div>
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <form asp-action="Agregar">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label asp-for="Nombre" class="form-label fw-bold">Nombre del Producto</label>
-                                <input asp-for="Nombre" class="form-control" placeholder="Ej. Martillo Galponero..." />
-                                <span asp-validation-for="Nombre" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label asp-for="Descripcion" class="form-label fw-bold">Descripción Corta</label>
-                                <input asp-for="Descripcion" class="form-control" placeholder="Especificaciones técnicas..." />
-                                <span asp-validation-for="Descripcion" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label asp-for="IdMarca" class="form-label fw-bold">Marca</label>
-                                <select asp-for="IdMarca" class="form-select" asp-items="ViewBag.Marcas">
-                                    <option value="">-- Seleccione una Marca --</option>
-                                </select>
-                                <span asp-validation-for="IdMarca" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="IdCategoria" class="form-label fw-bold">Categoría</label>
-                                <select asp-for="IdCategoria" class="form-select" asp-items="ViewBag.Categorias">
-                                    <option value="">-- Seleccione una Categoría --</option>
-                                </select>
-                                <span asp-validation-for="IdCategoria" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <label asp-for="Precio" class="form-label fw-bold">Precio Unitario (S/)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">S/</span>
-                                    <input asp-for="Precio" type="number" step="0.01" class="form-control" />
+                        <div class="row g-4">
+                            <!-- Nombre completo (Ocupa toda la fila) -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="Nombre" class="form-control" id="floatingProdNombre" placeholder="Nombre" />
+                                    <label asp-for="Nombre" for="floatingProdNombre">Nombre del Producto</label>
+                                    <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
                                 </div>
-                                <span asp-validation-for="Precio" class="text-danger"></span>
                             </div>
+
+                            <!-- Marca y Categoría (Mitad y mitad) -->
                             <div class="col-md-6">
-                                <label asp-for="Stock" class="form-label fw-bold">Stock Inicial</label>
-                                <input asp-for="Stock" type="number" class="form-control" />
-                                <span asp-validation-for="Stock" class="text-danger"></span>
+                                <div class="form-floating">
+                                    <select asp-for="IdMarca" class="form-select" id="floatingMarca" asp-items="ViewBag.Marcas">
+                                        <option value="">-- Seleccione --</option>
+                                    </select>
+                                    <label asp-for="IdMarca" for="floatingMarca">Marca</label>
+                                    <span asp-validation-for="IdMarca" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select asp-for="IdCategoria" class="form-select" id="floatingCat" asp-items="ViewBag.Categorias">
+                                        <option value="">-- Seleccione --</option>
+                                    </select>
+                                    <label asp-for="IdCategoria" for="floatingCat">Categoría</label>
+                                    <span asp-validation-for="IdCategoria" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
+
+                            <!-- Precio y Stock (Mitad y mitad) -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Precio" class="form-control text-success fw-bold" id="floatingPrecio" type="number" step="0.01" placeholder="0.00" />
+                                    <label asp-for="Precio" for="floatingPrecio">Precio de Venta (S/)</label>
+                                    <span asp-validation-for="Precio" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Stock" class="form-control" id="floatingStock" type="number" placeholder="0" />
+                                    <label asp-for="Stock" for="floatingStock">Stock Inicial</label>
+                                    <span asp-validation-for="Stock" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
+
+                            <!-- URL de Imagen -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="ImagenUrl" class="form-control" id="floatingImg" placeholder="URL" />
+                                    <label asp-for="ImagenUrl" for="floatingImg">URL de la Imagen (Opcional)</label>
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea asp-for="Descripcion" class="form-control" id="floatingDesc" placeholder="Descripción" style="height: 100px"></textarea>
+                                    <label asp-for="Descripcion" for="floatingDesc">Descripción del Producto</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar y Volver</a>
-                            <button type="submit" class="btn btn-success px-4">Guardar Producto</button>
+                        <hr class="my-5">
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a asp-action="Index" class="btn btn-light btn-lg px-4 fw-bold text-secondary rounded-pill">Cancelar</a>
+                            <button type="submit" class="btn btn-warning btn-lg px-5 fw-bold text-dark rounded-pill shadow-sm">Guardar Producto</button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

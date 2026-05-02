@@ -1,34 +1,33 @@
 ﻿@model Proyecto_Ferreteria.Models.Categoria
 
+@{
+    ViewData["Title"] = "Detalle de Categoría";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-info text-white p-4 text-center">
-                    <h3 class="mb-0">🔍 Detalles de la Categoría</h3>
+        <div class="col-lg-6">
+
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white p-4 border-0">
+                    <h5 class="mb-0 fw-bold">Ficha de la Categoría</h5>
                 </div>
-                <div class="card-body p-5">
-                    <div class="mb-4 text-center">
-                        <div class="display-1 text-info mb-3">📁</div>
-                        <h5 class="text-muted small text-uppercase fw-bold">Nombre Registrado</h5>
-                        <p class="display-6 fw-bold text-dark">@Model.Nombre</p>
-                    </div>
 
-                    <hr class="my-4">
+                <div class="card-body p-5 text-center">
+                    <p class="text-muted text-uppercase fw-bold small mb-1">Identificador: #@Model.IdCategoria</p>
+                    <h2 class="fw-bolder text-dark mb-4">@Html.DisplayFor(model => model.Nombre)</h2>
 
-                    <div class="d-grid gap-2">
-                        <a asp-action="Edit" asp-route-id="@Model.IdCategoria" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                    <div class="d-flex justify-content-center gap-3 mt-5">
+                        <a asp-action="Edit" asp-route-id="@Model?.IdCategoria" class="btn btn-primary px-4 py-2 rounded-pill fw-bold">
                             Editar Información
                         </a>
-                        <a asp-action="Index" class="btn btn-outline-secondary">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold">
                             Volver al Listado
                         </a>
                     </div>
                 </div>
-                <div class="card-footer bg-light text-center py-3">
-                    <small class="text-muted">ID de Registro: #@Model.IdCategoria</small>
-                </div>
             </div>
+
         </div>
     </div>
 </div>

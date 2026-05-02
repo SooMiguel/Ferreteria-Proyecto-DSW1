@@ -1,35 +1,45 @@
 ﻿@model Proyecto_Ferreteria.Models.Marca
 
+@{
+    ViewData["Title"] = "Eliminar Marca";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-lg-6">
+
             <div class="card shadow-lg border-0 rounded-4 border-top border-danger border-5">
                 <div class="card-body p-5 text-center">
-                    <div class="text-danger mb-4">
-                        <span style="font-size: 5rem;">⚠️</span>
+
+                    <div class="mb-4">
+                        <span class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                            🗑️
+                        </span>
                     </div>
 
-                    <h2 class="fw-bold text-dark">Confirmar Eliminación</h2>
-                    <p class="text-muted mb-4">¿Realmente desea eliminar la marca <strong>"@Model.Nombre"</strong>? Los productos asociados podrían verse afectados.</p>
+                    <h3 class="fw-bolder text-dark">¿Eliminar Marca?</h3>
+                    <p class="text-muted mb-4">Estás a punto de borrar esta marca permanentemente. Asegúrate de que no haya productos usando esta marca antes de continuar.</p>
 
-                    <div class="bg-light p-4 rounded-3 mb-4 border">
-                        <span class="text-secondary small d-block">Marca a dar de baja:</span>
-                        <span class="fs-3 fw-bold text-danger">@Model.Nombre</span>
+                    <div class="bg-light rounded-4 p-4 mb-5 border">
+                        <p class="text-secondary small fw-bold text-uppercase mb-1">Marca seleccionada:</p>
+                        <h4 class="fw-bold text-dark mb-0">@Html.DisplayFor(model => model.Nombre)</h4>
                     </div>
 
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="IdMarca" />
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-danger btn-lg fw-bold shadow-sm">
-                                Sí, Eliminar de la Base de Datos
-                            </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                Cancelar y Regresar
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-light btn-lg px-4 rounded-pill fw-bold text-secondary">
+                                Cancelar
                             </a>
+                            <button type="submit" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold shadow-sm">
+                                Sí, Eliminar Definitivamente
+                            </button>
                         </div>
                     </form>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

@@ -1,37 +1,56 @@
 ﻿@model Proyecto_Ferreteria.Models.Producto
 
+@{
+    ViewData["Title"] = "Dar de baja Producto";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-lg-6">
+
             <div class="card shadow-lg border-0 rounded-4 border-top border-danger border-5">
                 <div class="card-body p-5 text-center">
-                    <div class="text-danger mb-4">
-                        <span style="font-size: 4rem;">🗑️</span>
-                    </div>
-                    <h2 class="fw-bold">Dar de baja producto</h2>
-                    <p class="text-muted">¿Confirmas que deseas ocultar este producto del catálogo y del inventario activo?</p>
 
-                    <div class="card bg-light border-0 mb-4 p-3">
-                        <div class="row align-items-center">
-                            <div class="col-4 text-center">
-                                <img src="@Model.ImagenUrl" class="img-fluid rounded" style="max-height: 80px;" onerror="this.src='/img/default-product.png'">
+                    <div class="mb-4">
+                        <span class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                            📦
+                        </span>
+                    </div>
+
+                    <h3 class="fw-bolder text-dark">¿Dar de baja este producto?</h3>
+                    <p class="text-muted mb-4">El producto dejará de estar visible en la tienda para los clientes, pero su historial de ventas se mantendrá intacto.</p>
+
+                    <!-- Mini ficha del producto a eliminar -->
+                    <div class="card bg-light border-0 rounded-4 mb-5 text-start overflow-hidden">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-4 bg-white text-center p-3">
+                                <img src="@Model.ImagenUrl" class="img-fluid rounded" style="max-height: 90px; object-fit: contain;" onerror="this.src='/img/default-product.png'" alt="Imagen">
                             </div>
-                            <div class="col-8 text-start">
-                                <h5 class="mb-0 fw-bold">@Model.Nombre</h5>
-                                <p class="mb-0 text-muted small">S/ @Model.Precio | Stock: @Model.Stock</p>
+                            <div class="col-8 p-3 border-start">
+                                <h5 class="fw-bold text-dark mb-1">@Model.Nombre</h5>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted small">Stock: @Model.Stock un.</span>
+                                    <span class="fw-bold text-success">S/ @Model.Precio.ToString("N2")</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <form asp-action="Eliminar">
                         <input type="hidden" asp-for="IdProducto" />
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-danger btn-lg fw-bold shadow-sm">Confirmar Eliminación</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-light btn-lg px-4 rounded-pill fw-bold text-secondary">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold shadow-sm">
+                                Sí, Retirar del Catálogo
+                            </button>
                         </div>
                     </form>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

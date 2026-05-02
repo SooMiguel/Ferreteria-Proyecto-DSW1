@@ -3,9 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Proyecto_Ferreteria.Data;
 using Proyecto_Ferreteria.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization; // <-- Agregado para seguridad
 
 namespace Proyecto_Ferreteria.Controllers
 {
+    // <-- Candado para permitir solo Administradores
+    [Authorize(Roles = "Administrador")]
     public class MarcasController : Controller
     {
         private readonly FerreteriaContext _context;

@@ -1,34 +1,44 @@
 ﻿@model Proyecto_Ferreteria.Models.Marca
 
+@{
+    ViewData["Title"] = "Editar Marca";
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white p-4">
-                    <h4 class="mb-0">✏️ Editar Marca</h4>
+        <div class="col-lg-5 col-md-7">
+
+            <div class="text-center mb-4">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex justify-content-center align-items-center mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                    ✏️
                 </div>
+                <h3 class="fw-bolder text-dark">Modificar Marca</h3>
+            </div>
+
+            <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-5">
                     <form asp-action="Edit">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         <input type="hidden" asp-for="IdMarca" />
 
-                        <div class="form-group mb-4">
-                            <label asp-for="Nombre" class="form-label fw-bold text-secondary">Nombre de la Marca</label>
-                            <input asp-for="Nombre" class="form-control form-control-lg border-2" placeholder="Ej: Bosch, Truper..." />
-                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Nombre" class="form-control" id="floatingEditMarca" placeholder="Nombre" />
+                            <label asp-for="Nombre" for="floatingEditMarca">Nombre de la Marca</label>
+                            <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                        <div class="d-grid gap-3 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold text-white rounded-pill shadow-sm">
                                 Guardar Cambios
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                Cancelar
+                            <a asp-action="Index" class="btn btn-light btn-lg fw-bold text-secondary rounded-pill">
+                                Regresar
                             </a>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
