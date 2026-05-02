@@ -2,15 +2,62 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center mt-5">
-    <h1>Sistema de Ferretería</h1>
-    <p>Bienvenido al sistema</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark">Bienvenido, @User.Identity.Name!</h1>
+        <p class="lead text-muted">Panel de control del Sistema de Ferretería</p>
+        <hr class="mx-auto" style="width: 100px; height: 5px; background-color: #fd7e14; border: none; border-radius: 5px;">
+    </div>
 
-    <a asp-controller="Producto" asp-action="Index" class="btn btn-primary m-2">
-        Productos
-    </a>
+    <div class="row g-4 justify-content-center">
+        <!-- Tarjeta: Tienda -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 hover-shadow">
+                <div class="fs-1 mb-3">🛒</div>
+                <h4 class="fw-bold">Venta al Público</h4>
+                <p class="text-muted">Accede al catálogo interactivo y gestiona el carrito de compras.</p>
+                <a asp-controller="Tienda" asp-action="Index" class="btn btn-warning fw-bold mt-auto">Ir a la Tienda</a>
+            </div>
+        </div>
 
-    <a asp-controller="Venta" asp-action="Index" class="btn btn-success m-2">
-        Ventas
-    </a>
+        <!-- Tarjeta: Inventario -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 hover-shadow">
+                <div class="fs-1 mb-3">🛠️</div>
+                <h4 class="fw-bold">Almacén</h4>
+                <p class="text-muted">Control total de productos, stock, marcas y categorías disponibles.</p>
+                <a asp-controller="Producto" asp-action="Index" class="btn btn-dark fw-bold mt-auto">Gestionar Stock</a>
+            </div>
+        </div>
+
+        <!-- Tarjeta: Ventas -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 hover-shadow">
+                <div class="fs-1 mb-3">📊</div>
+                <h4 class="fw-bold">Reportes</h4>
+                <p class="text-muted">Visualiza el historial detallado de transacciones realizadas por fecha.</p>
+                <a asp-controller="Ventas" asp-action="Index" class="btn btn-primary fw-bold mt-auto">Ver Ventas</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 p-4 bg-light rounded-4 shadow-sm border">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h5 class="fw-bold mb-1">Estado del Servidor: <span class="text-success">● En línea</span></h5>
+                <p class="mb-0 text-muted small">Última sincronización con SQL Server: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="badge bg-dark">Versión 1.0 Final</span>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>

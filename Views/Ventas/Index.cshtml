@@ -1,93 +1,52 @@
 ﻿@model IEnumerable<Proyecto_Ferreteria.Models.VentasViewModel>
 
 <div class="container mt-4">
+    <h2 class="fw-bold text-dark mb-4">📊 Historial de Ventas</h2>
 
-    <!-- Título -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold">📊 Gestión de Ventas</h2>
-    </div>
-
-    <!-- Filtro -->
-    <div class="card shadow-sm mb-4">
+    <!-- Panel de Filtros -->
+    <div class="card border-0 shadow-sm mb-4 bg-light">
         <div class="card-body">
             <form method="get" class="row g-3 align-items-end">
-
                 <div class="col-md-4">
-                    <label class="form-label">Fecha Inicio</label>
+                    <label class="form-label fw-bold small">Fecha Inicio</label>
                     <input type="date" name="inicio" class="form-control" />
                 </div>
-
                 <div class="col-md-4">
-                    <label class="form-label">Fecha Fin</label>
+                    <label class="form-label fw-bold small">Fecha Fin</label>
                     <input type="date" name="fin" class="form-control" />
                 </div>
-
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">
-                        🔍 Filtrar Ventas
-                    </button>
+                    <button type="submit" class="btn btn-dark w-100 fw-bold">Filtrar Reporte</button>
                 </div>
-
             </form>
         </div>
     </div>
 
-    <!-- Tabla -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-
-            <table class="table table-hover align-middle">
-                <thead class="table-dark text-center">
+    <div class="card shadow-sm border-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-primary text-primary">
+                <tr>
+                    <th class="ps-4 text-dark">ID Venta</th>
+                    <th class="text-dark">Cliente</th>
+                    <th class="text-dark">Fecha</th>
+                    <th class="text-dark">Total</th>
+                    <th class="text-center text-dark">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>#</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                        <th>Estado</th>
+                        <td class="ps-4 fw-bold">#@item.IdVenta</td>
+                        <td>@item.Cliente</td>
+                        <td>@item.FechaVenta.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="fw-bold text-primary">S/ @item.ImporteTotal.ToString("N2")</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-success">@item.Estado</span>
+                        </td>
                     </tr>
-                </thead>
-
-                <tbody class="text-center">
-                    @if (!Model.Any())
-                    {
-                        <tr>
-                            <td colspan="5" class="text-muted">
-                                No hay ventas en este rango
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.IdVenta</td>
-                                <td>@item.Cliente</td>
-                                <td>@item.FechaVenta.ToString("dd/MM/yyyy")</td>
-                                <td class="fw-bold text-success">
-                                    S/. @item.ImporteTotal
-                                </td>
-                                <td>
-                                    @if (item.Estado == "Pagado")
-                                    {
-                                        <span class="badge bg-success">Pagado</span>
-                                    }
-                                    else if (item.Estado == "Pendiente")
-                                    {
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">@item.Estado</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
-
 </div>
